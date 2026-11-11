@@ -1,0 +1,54 @@
+name: Testes
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  test:
+    name: Build e testes (JDK ${{ matrix.java }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ "26" ]
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v5
+
+      - name: Configurar JDK ${{ matrix.java }} (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+          cache: maven
+
+      - name: Garantir permissão de execução do Maven Wrapper
+        run: chmod +x ./mvnw
+
+      - name: Build e testes
+        run: ./mvnw --batch-mode --no-transfer-progress verify
+
+      - name: Publicar relatório de testes
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Resultado dos testes (JUnit)
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: false
+
+      - name: Upload de artefatos de teste
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports/
+          retention-days: 7
