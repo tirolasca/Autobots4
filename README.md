@@ -20,7 +20,7 @@ O **AutoBots** resolve o dia a dia de uma unidade que presta serviços de manute
 
 | Camada | Tecnologia |
 |---|---|
-| Linguagem | Java 26 |
+| Linguagem | Java 27 |
 | Framework | Spring Boot 4.1 |
 | API hipermídia | Spring HATEOAS (`application/hal+json`) |
 | Persistência | Spring Data JPA / Hibernate |
@@ -53,7 +53,7 @@ Empresa ──< usuarios (Usuario) ──< documentos, emails, telefones, creden
 
 ### Pré-requisitos
 
-- JDK 26
+- JDK 27
 - Nenhuma instalação adicional: o Maven Wrapper (`mvnw`) acompanha o projeto
 
 ### Execução
@@ -67,8 +67,8 @@ No Windows (PowerShell), se o `JAVA_HOME` não estiver configurado:
 
 ```powershell
 cd automanager
-$env:JAVA_HOME="C:\Program Files\Java\jdk-26.0.2.1"
-$env:Path="$env:JAVA_HOME\bin;$env:Path"
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-27.0.1.0.3"
+$env:Path = "$env:JAVA_HOME\bin;$env:Path"
 ./mvnw spring-boot:run
 ```
 
@@ -207,4 +207,4 @@ Usuários de exemplo (senha entre parênteses): `admin` (`admin123`), `gerente` 
 
 ## Integração contínua
 
-O workflow em `.github/workflows/test.yml` compila e executa os testes (`./mvnw verify`) a cada *push* e *pull request* na `main`, com JDK 26.
+O workflow em `.github/workflows/test.yml` compila e executa os testes (`./mvnw verify`) a cada *push* e *pull request* na `main`, com JDK 27.

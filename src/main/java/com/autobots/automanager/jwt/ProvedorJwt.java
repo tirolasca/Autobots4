@@ -61,8 +61,11 @@ public class ProvedorJwt {
 	/** Permite informar a validade; duração negativa gera um token já expirado (útil em testes). */
 	public String gerar(String nomeUsuario, Collection<String> perfis, Duration validade) {
 		Instant agora = Instant.now();
-		JwtClaimsSet reivindicacoes = JwtClaimsSet.builder().subject(nomeUsuario).issuedAt(agora)
-				.expiresAt(agora.plus(validade)).claim("perfis", List.copyOf(perfis)).build();
+		Instant expiracao = agora.plus(validade);
+		// O Spring Security exige exp > iat: para um token já expirado, antedata a emissão.
+		Instant emissao = expiracao.isAfter(agora) ? agora : expiracao.minusSeconds(60);
+		JwtClaimsSet reivindicacoes = JwtClaimsSet.builder().subject(nomeUsuario).issuedAt(emissao)
+				.expiresAt(expiracao).claim("perfis", List.copyOf(perfis)).build();
 		JwsHeader cabecalho = JwsHeader.with(MacAlgorithm.HS256).build();
 		return codificador.encode(JwtEncoderParameters.from(cabecalho, reivindicacoes)).getTokenValue();
 	}

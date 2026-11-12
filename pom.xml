@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.1.1</version>
+		<version>4.1.2</version>
 		<relativePath />
 	</parent>
 
@@ -21,8 +21,8 @@
 	<description>Micro-servico para gestao de lojas de manutencao veicular e venda de autopecas</description>
 
 	<properties>
-		<java.version>26</java.version>
-		<lombok.version>1.18.46</lombok.version>
+		<java.version>27</java.version>
+		<lombok.version>1.18.48</lombok.version>
 	</properties>
 
 	<dependencies>

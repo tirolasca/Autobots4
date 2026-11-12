@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [ "26" ]
+        java: [ "27" ]
 
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Configurar JDK ${{ matrix.java }} (Temurin)
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: ${{ matrix.java }}
@@ -37,7 +37,7 @@ jobs:
         run: ./mvnw --batch-mode --no-transfer-progress verify
 
       - name: Publicar relatório de testes
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v3
         if: always()
         with:
           name: Resultado dos testes (JUnit)
@@ -47,7 +47,7 @@ jobs:
 
       - name: Upload de artefatos de teste
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: surefire-reports
           path: target/surefire-reports/

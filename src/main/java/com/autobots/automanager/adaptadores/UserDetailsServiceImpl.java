@@ -28,7 +28,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
+	// noRollbackFor: o login captura UsernameNotFoundException dentro de uma transação externa;
+	// sem isso, a exceção marcaria a transação como rollback-only e o commit falharia.
+	@Transactional(readOnly = true, noRollbackFor = UsernameNotFoundException.class)
 	public UserDetails loadUserByUsername(String nomeUsuario) throws UsernameNotFoundException {
 		CredencialUsuarioSenha credencial = credenciais.findByNomeUsuario(nomeUsuario)
 				.orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
